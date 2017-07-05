@@ -1,0 +1,8 @@
+access_token: "xxxx"
+access_token_secret: "xxxx"
+zone1:
+  foo: "999900000001"
+  bar: "999900000002"
+zone2:
+  foo: "999900000003"
+  bar: "999900000004"
