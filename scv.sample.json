@@ -1,0 +1,8 @@
+{
+  "access_token": "xxxx",
+  "access_token_secret": "xxxx",
+  "servers": [
+    { "name": "ubuntu16.04", "zone": "is1a", "id": "999900000001" },
+    { "name": "centos6.9",   "zone": "is1b", "id": "999900000002" }
+  ]
+}
