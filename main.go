@@ -16,17 +16,20 @@ import (
 )
 
 func main() {
+	version := "0.0.1"
+	expectedArgsSize := 2
+
 	argsSize := len(os.Args) - 1
 	if argsSize == 0 {
-		fmt.Println("scv version 0.0.1")
-	} else if argsSize == 1 {
-		err := cmd.Run("foo")
+		fmt.Printf("scv version %s\n", version)
+	} else if argsSize == 2 {
+		err := cmd.Run(os.Args[1], os.Args[2])
 		if err != nil {
 			fmt.Println(err)
 		}
 	} else {
-		msg := "ArgumentError: wrong number of arguments (given %d, expected 1)\n"
-		fmt.Printf(msg, argsSize)
+		msg := "fatal: Wrong number of arguments (given %d, expected %d)\n"
+		fmt.Printf(msg, argsSize, expectedArgsSize)
 		os.Exit(1)
 	}
 }
