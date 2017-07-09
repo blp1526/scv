@@ -7,8 +7,8 @@ import (
 
 type Scv struct {
 	AccessToken       string   `json:"access_token"`
-	AccessTokenSecret string   `json:access_token_secret`
-	Servers           []Server `json:servers`
+	AccessTokenSecret string   `json:"access_token_secret"`
+	Servers           []Server `json:"servers"`
 }
 
 type Server struct {
@@ -17,17 +17,15 @@ type Server struct {
 	ID   string `json:"id"`
 }
 
-func Load(filePath string) (*Scv, error) {
-	var scv Scv
-
+func Load(scv *Scv, filePath string) error {
 	bytes, err := ioutil.ReadFile(filePath)
 	if err != nil {
-		return &scv, err
+		return err
 	}
 
-	err = json.Unmarshal(bytes, &scv)
+	err = json.Unmarshal(bytes, scv)
 	if err != nil {
-		return &scv, err
+		return err
 	}
-	return &scv, err
+	return err
 }
