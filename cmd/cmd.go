@@ -4,6 +4,7 @@ import (
 	"os/exec"
 
 	"github.com/blp1526/scv/api"
+	"github.com/blp1526/scv/logger"
 )
 
 func Run(zoneName string, serverName string) error {
@@ -14,10 +15,11 @@ func Run(zoneName string, serverName string) error {
 	}
 
 	vncPath := vncPath(*body)
+	logger.Debug("vncPath is " + vncPath)
 	err = exec.Command("open", vncPath).Run()
 	return err
 }
 
 func vncPath(body api.Body) string {
-	return "// vnc://:" + body.Password + "@" + body.Host + ":" + body.Port
+	return "vnc://:" + body.Password + "@" + body.Host + ":" + body.Port
 }

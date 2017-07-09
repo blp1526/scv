@@ -36,7 +36,6 @@ func Request(body interface{}, zoneName string, serverId string) error {
 	scv := &config.Scv{}
 	current, _ := user.Current()
 	dir := filepath.Join(current.HomeDir, "scv.json")
-	logger.Debug(dir)
 	config.Load(scv, dir)
 
 	if scv.AccessToken == "" || scv.AccessTokenSecret == "" {
