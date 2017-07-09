@@ -19,9 +19,30 @@ type Body struct {
 	Port     string `json:"Port"`
 }
 
-func Request(body interface{}, zoneName string, serverId string) error {
-	client := &http.Client{Timeout: 10 * time.Second}
+func Request(body interface{}, zoneName string, serverName string) error {
+	scv := &config.Scv{}
+	current, _ := user.Current()
+	dir := filepath.Join(current.HomeDir, "scv.json")
+	config.Load(scv, dir)
 
+	if scv.AccessToken == "" || scv.AccessTokenSecret == "" {
+		message := fmt.Sprintf("Check scv.json, AccessToken is %s, AccessTokenSecret is %s", scv.AccessToken, scv.AccessTokenSecret)
+		return errors.New(message)
+	}
+
+	serverId := ""
+	for i := 0; i < len(scv.Servers); i++ {
+		if scv.Servers[i].ZoneName == zoneName && scv.Servers[i].Name == serverName {
+			serverId = scv.Servers[i].ID
+		}
+	}
+	logger.Debug(fmt.Sprintf("Found ServerID is %s", serverId))
+
+	if serverId == "" {
+		return errors.New(fmt.Sprintf("ServerID is not found by ZoneName %s and ServerName %s", zoneName, serverName))
+	}
+
+	client := &http.Client{Timeout: 10 * time.Second}
 	scheme := "https"
 	host := "secure.sakura.ad.jp"
 	path := "/cloud/zone/" + zoneName + "/api/cloud/1.1/server/" + serverId + "/vnc/proxy"
@@ -31,16 +52,6 @@ func Request(body interface{}, zoneName string, serverId string) error {
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return err
-	}
-
-	scv := &config.Scv{}
-	current, _ := user.Current()
-	dir := filepath.Join(current.HomeDir, "scv.json")
-	config.Load(scv, dir)
-
-	if scv.AccessToken == "" || scv.AccessTokenSecret == "" {
-		message := fmt.Sprintf("Check scv.json, AccessToken is %s, AccessTokenSecret is %s", scv.AccessToken, scv.AccessTokenSecret)
-		return errors.New(message)
 	}
 
 	req.SetBasicAuth(scv.AccessToken, scv.AccessTokenSecret)

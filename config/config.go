@@ -12,9 +12,9 @@ type Scv struct {
 }
 
 type Server struct {
-	Name string `json:"name"`
-	Zone string `json:"zone"`
-	ID   string `json:"id"`
+	Name     string `json:"name"`
+	ZoneName string `json:"zone_name"`
+	ID       string `json:"id"`
 }
 
 func Load(scv *Scv, filePath string) error {
