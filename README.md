@@ -1,6 +1,6 @@
 # scv
 
-SAKURA Cloud VNC Opener for MacOS
+SAKURA Cloud VNC Opener for macOS
 
 ## Installation
 
