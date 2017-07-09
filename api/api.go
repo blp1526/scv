@@ -19,7 +19,7 @@ type Body struct {
 	Port     string `json:"Port"`
 }
 
-func Request(body interface{}, zoneName string, serverName string) error {
+func Request(body *Body, zoneName string, serverName string) error {
 	scv := &config.Scv{}
 	current, _ := user.Current()
 	dir := filepath.Join(current.HomeDir, "scv.json")

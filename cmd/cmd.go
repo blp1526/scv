@@ -15,12 +15,12 @@ func Run(zoneName string, serverName string) error {
 		return err
 	}
 
-	vncPath := vncPath(*body)
+	vncPath := vncPath(body)
 	logger.Debug(fmt.Sprintf("VNC Path: %s", vncPath))
 	err = exec.Command("open", vncPath).Run()
 	return err
 }
 
-func vncPath(body api.Body) string {
+func vncPath(body *api.Body) string {
 	return "vnc://:" + body.Password + "@" + body.Host + ":" + body.Port
 }
