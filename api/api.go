@@ -36,7 +36,7 @@ func Request(body interface{}, zoneName string, serverName string) error {
 			serverId = scv.Servers[i].ID
 		}
 	}
-	logger.Debug(fmt.Sprintf("Found ServerID is %s", serverId))
+	logger.Debug(fmt.Sprintf("Server ID: %s", serverId))
 
 	if serverId == "" {
 		return errors.New(fmt.Sprintf("ServerID is not found by ZoneName %s and ServerName %s", zoneName, serverName))
@@ -47,7 +47,7 @@ func Request(body interface{}, zoneName string, serverName string) error {
 	host := "secure.sakura.ad.jp"
 	path := "/cloud/zone/" + zoneName + "/api/cloud/1.1/server/" + serverId + "/vnc/proxy"
 	url := scheme + "://" + host + path
-	logger.Debug("URL is " + url)
+	logger.Debug(fmt.Sprintf("URL: %s", url))
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {

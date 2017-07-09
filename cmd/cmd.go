@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"os/exec"
 
 	"github.com/blp1526/scv/api"
@@ -15,7 +16,7 @@ func Run(zoneName string, serverName string) error {
 	}
 
 	vncPath := vncPath(*body)
-	logger.Debug("vncPath is " + vncPath)
+	logger.Debug(fmt.Sprintf("VNC Path: %s", vncPath))
 	err = exec.Command("open", vncPath).Run()
 	return err
 }
