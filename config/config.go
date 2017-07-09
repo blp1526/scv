@@ -24,8 +24,5 @@ func Load(scv *Scv, filePath string) error {
 	}
 
 	err = json.Unmarshal(bytes, scv)
-	if err != nil {
-		return err
-	}
 	return err
 }
