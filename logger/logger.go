@@ -2,7 +2,6 @@ package logger
 
 import (
 	"fmt"
-	"os"
 )
 
 const normal = "\033[m"
@@ -21,5 +20,4 @@ func Debug(message string) {
 
 func Fatal(message string) {
 	fmt.Printf("%sfatal%s: %s\n", red, normal, message)
-	os.Exit(1)
 }
