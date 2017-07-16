@@ -2,7 +2,6 @@ package api
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"net/http"
 	"os/user"
@@ -26,8 +25,7 @@ func Request(body *Body, zoneName string, serverName string) error {
 	config.Load(scv, dir)
 
 	if scv.AccessToken == "" || scv.AccessTokenSecret == "" {
-		message := fmt.Sprintf("Check scv.json, AccessToken is %s, AccessTokenSecret is %s", scv.AccessToken, scv.AccessTokenSecret)
-		return errors.New(message)
+		return fmt.Errorf("Check scv.json, AccessToken is %s, AccessTokenSecret is %s", scv.AccessToken, scv.AccessTokenSecret)
 	}
 
 	serverId := ""
@@ -39,7 +37,7 @@ func Request(body *Body, zoneName string, serverName string) error {
 	logger.Debug(fmt.Sprintf("Server ID: %s", serverId))
 
 	if serverId == "" {
-		return errors.New(fmt.Sprintf("ServerID is not found by ZoneName %s and ServerName %s", zoneName, serverName))
+		return fmt.Errorf("ServerID is not found by ZoneName %s and ServerName %s", zoneName, serverName)
 	}
 
 	client := &http.Client{Timeout: 10 * time.Second}
@@ -61,8 +59,7 @@ func Request(body *Body, zoneName string, serverName string) error {
 	}
 	// NOTE: not 200
 	if resp.StatusCode != 201 {
-		message := fmt.Sprintf("Bad response status (got %d, expected 201)", resp.StatusCode)
-		return errors.New(message)
+		return fmt.Errorf("Bad response status (got %d, expected 201)", resp.StatusCode)
 	}
 
 	defer resp.Body.Close()
