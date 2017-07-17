@@ -14,10 +14,14 @@ const magenta = "\033[35m"
 const cyan = "\033[36m"
 const lightGray = "\033[37m"
 
-func Debug(message string) {
-	fmt.Printf("%sdebug%s: %s\n", lightGray, normal, message)
+func Debug(msg string) {
+	fmt.Println(format(lightGray, "debug", msg))
 }
 
-func Fatal(message string) {
-	fmt.Printf("%sfatal%s: %s\n", red, normal, message)
+func Fatal(msg string) {
+	fmt.Println(format(red, "fatal", msg))
+}
+
+func format(color string, level string, msg string) string {
+	return fmt.Sprintf("%s%s%s: %s", color, level, normal, msg)
 }
