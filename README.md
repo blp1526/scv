@@ -1,6 +1,6 @@
 # scv
 
-macOS VNC Client Opener for SAKURA Cloud
+VNC path creator for SAKURA Cloud
 
 ## Installation
 
@@ -18,9 +18,9 @@ If you use this cli tool, you have to turn on a SAKURA Cloud server power.
 * Run below command.
 
 ```
-# format
+# Format
 $ scv ZONE_NAME SERVER_NAME
 
-# example
+# Example
 $ scv tk1a centos7
 ```
