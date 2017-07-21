@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	msg, err := cmd.Run(os.Args...)
+	msg, err := cmd.Run()
 	if err != nil {
 		logger.Fatal(fmt.Sprintf("%s", err))
 		os.Exit(1)

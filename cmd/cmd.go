@@ -1,27 +1,32 @@
 package cmd
 
 import (
+	"flag"
 	"fmt"
 
 	"github.com/blp1526/scv/api"
 )
 
-const version = "0.0.1"
+const version = "0.0.3"
 const expectedArgsSize = 2
 
-func Run(args ...string) (msg string, err error) {
-	argsSize := len(args) - 1
+func Run() (msg string, err error) {
+	var optVersion bool
+	flag.BoolVar(&optVersion, "version", false, "print version number")
 
-	if argsSize == 0 {
-		msg = fmt.Sprintf("scv version %s", version)
-		return msg, nil
-	} else if argsSize != expectedArgsSize {
-		return msg, fmt.Errorf("Expected arguments size is %d", expectedArgsSize)
+	flag.Parse()
+	if optVersion {
+		return fmt.Sprintf("scv version %s", version), nil
+	}
+
+	argsSize := len(flag.Args())
+	if argsSize != expectedArgsSize {
+		return msg, fmt.Errorf("Expected arguments size is %d, but given %d", expectedArgsSize, argsSize)
 	}
 
 	body := &api.Body{}
-	zoneName := args[1]
-	serverName := args[2]
+	zoneName := flag.Args()[0]
+	serverName := flag.Args()[1]
 	err = api.Request(body, zoneName, serverName)
 	if err != nil {
 		return msg, err
