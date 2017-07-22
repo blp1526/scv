@@ -7,7 +7,8 @@ import (
 	"github.com/blp1526/scv/api"
 )
 
-const version = "0.0.3"
+var version string
+
 const expectedArgsSize = 2
 
 func Run() (msg string, err error) {
