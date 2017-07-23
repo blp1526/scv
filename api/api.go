@@ -9,7 +9,6 @@ import (
 	"time"
 
 	"github.com/blp1526/scv/config"
-	"github.com/blp1526/scv/logger"
 )
 
 type Body struct {
@@ -34,7 +33,6 @@ func Request(body *Body, zoneName string, serverName string) error {
 			serverId = scv.Servers[i].ID
 		}
 	}
-	logger.Debug(fmt.Sprintf("Server ID: %s", serverId))
 
 	if serverId == "" {
 		return fmt.Errorf("ServerID is not found by ZoneName %s and ServerName %s", zoneName, serverName)
@@ -45,7 +43,6 @@ func Request(body *Body, zoneName string, serverName string) error {
 	host := "secure.sakura.ad.jp"
 	path := "/cloud/zone/" + zoneName + "/api/cloud/1.1/server/" + serverId + "/vnc/proxy"
 	url := scheme + "://" + host + path
-	logger.Debug(fmt.Sprintf("URL: %s", url))
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {

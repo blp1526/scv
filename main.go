@@ -2,17 +2,17 @@ package main
 
 import (
 	"fmt"
-	"os"
+	"log"
 
 	"github.com/blp1526/scv/cmd"
-	"github.com/blp1526/scv/logger"
+	"github.com/blp1526/scv/color"
 )
 
 func main() {
 	msg, err := cmd.Run()
 	if err != nil {
-		logger.Fatal(fmt.Sprintf("%s", err))
-		os.Exit(1)
+		log.SetFlags(0)
+		log.Fatal(color.Red(fmt.Sprintf("fatal: %s", err)))
 	} else {
 		fmt.Println(msg)
 	}
