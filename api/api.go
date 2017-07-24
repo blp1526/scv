@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/blp1526/scv/config"
+	"github.com/blp1526/scv/conf"
 )
 
 type Body struct {
@@ -17,31 +17,25 @@ type Body struct {
 	Port     string `json:"Port"`
 }
 
-func Request(body *Body, zoneName string, serverName string) error {
-	scv := &config.Scv{}
+func Request(body *Body, zoneName string, serverName string) (err error) {
 	current, _ := user.Current()
 	dir := filepath.Join(current.HomeDir, "scv.json")
-	config.Load(scv, dir)
 
-	if scv.AccessToken == "" || scv.AccessTokenSecret == "" {
-		return fmt.Errorf("Check scv.json, AccessToken is %s, AccessTokenSecret is %s", scv.AccessToken, scv.AccessTokenSecret)
+	config := &conf.Config{}
+	err = config.LoadFile(dir)
+	if err != nil {
+		return err
 	}
 
-	serverId := ""
-	for i := 0; i < len(scv.Servers); i++ {
-		if scv.Servers[i].ZoneName == zoneName && scv.Servers[i].Name == serverName {
-			serverId = scv.Servers[i].ID
-		}
-	}
-
-	if serverId == "" {
-		return fmt.Errorf("ServerID is not found by ZoneName %s and ServerName %s", zoneName, serverName)
+	serverID, err := config.GetServerID(zoneName, serverName)
+	if err != nil {
+		return err
 	}
 
 	client := &http.Client{Timeout: 10 * time.Second}
 	scheme := "https"
 	host := "secure.sakura.ad.jp"
-	path := "/cloud/zone/" + zoneName + "/api/cloud/1.1/server/" + serverId + "/vnc/proxy"
+	path := "/cloud/zone/" + zoneName + "/api/cloud/1.1/server/" + serverID + "/vnc/proxy"
 	url := scheme + "://" + host + path
 
 	req, err := http.NewRequest("GET", url, nil)
@@ -49,7 +43,7 @@ func Request(body *Body, zoneName string, serverName string) error {
 		return err
 	}
 
-	req.SetBasicAuth(scv.AccessToken, scv.AccessTokenSecret)
+	req.SetBasicAuth(config.AccessToken, config.AccessTokenSecret)
 	resp, err := client.Do(req)
 	if err != nil {
 		return err
