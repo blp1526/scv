@@ -22,5 +22,5 @@ If you use this cli tool, you have to turn on a SAKURA Cloud server power.
 $ scv ZONE_NAME SERVER_NAME
 
 # Example
-$ scv tk1a centos7
+$ scv is1a ubuntu
 ```
