@@ -21,7 +21,7 @@ func Request(body *Body, zoneName string, serverName string) (err error) {
 	current, _ := user.Current()
 	dir := filepath.Join(current.HomeDir, "scv.json")
 
-	config := &conf.Config{}
+	config := conf.Config{}
 	err = config.LoadFile(dir)
 	if err != nil {
 		return err

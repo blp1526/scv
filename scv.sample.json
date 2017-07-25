@@ -2,7 +2,6 @@
   "access_token": "xxxx",
   "access_token_secret": "xxxx",
   "servers": [
-    { "zone_name": "is1a", "id": "1129XXXXXXX1", "name": "ubuntu16.04" },
-    { "zone_name": "is1b", "id": "1129XXXXXXX2", "name": "centos6.9" }
+    { "zone_name": "is1a", "id": "1129XXXXXXX1", "name": "ubuntu" }
   ]
 }
