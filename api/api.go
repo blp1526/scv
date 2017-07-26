@@ -4,12 +4,15 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"os/user"
-	"path/filepath"
 	"time"
-
-	"github.com/blp1526/scv/conf"
 )
+
+type Vnc struct {
+	ZoneName          string
+	ServerID          string
+	AccessToken       string
+	AccessTokenSecret string
+}
 
 type Body struct {
 	Host     string `json:"Host"`
@@ -17,42 +20,31 @@ type Body struct {
 	Port     string `json:"Port"`
 }
 
-func Request(body *Body, zoneName string, serverName string) (err error) {
-	current, _ := user.Current()
-	dir := filepath.Join(current.HomeDir, "scv.json")
-
-	config := conf.Config{}
-	err = config.LoadFile(dir)
-	if err != nil {
-		return err
-	}
-
-	serverID, err := config.GetServerID(zoneName, serverName)
-	if err != nil {
-		return err
-	}
-
-	client := &http.Client{Timeout: 10 * time.Second}
+func (vnc *Vnc) GetServerAddress() (serverAddress string, err error) {
 	scheme := "https"
 	host := "secure.sakura.ad.jp"
-	path := "/cloud/zone/" + zoneName + "/api/cloud/1.1/server/" + serverID + "/vnc/proxy"
+	path := "/cloud/zone/" + vnc.ZoneName + "/api/cloud/1.1/server/" + vnc.ServerID + "/vnc/proxy"
 	url := scheme + "://" + host + path
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
-		return err
+		return serverAddress, err
 	}
 
-	req.SetBasicAuth(config.AccessToken, config.AccessTokenSecret)
+	req.SetBasicAuth(vnc.AccessToken, vnc.AccessTokenSecret)
+	client := &http.Client{Timeout: 10 * time.Second}
 	resp, err := client.Do(req)
 	if err != nil {
-		return err
-	}
-	// NOTE: not 200
-	if resp.StatusCode != 201 {
-		return fmt.Errorf("Bad response status (got %d, expected 201)", resp.StatusCode)
+		return serverAddress, err
 	}
 
+	// NOTE: not 200
+	if resp.StatusCode != 201 {
+		return serverAddress, fmt.Errorf("Bad response status (got %d, expected 201)", resp.StatusCode)
+	}
 	defer resp.Body.Close()
-	return json.NewDecoder(resp.Body).Decode(body)
+	body := &Body{}
+	json.NewDecoder(resp.Body).Decode(body)
+	serverAddress = "vnc://:" + body.Password + "@" + body.Host + ":" + body.Port
+	return serverAddress, err
 }
