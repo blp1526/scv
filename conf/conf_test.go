@@ -56,7 +56,9 @@ func TestLoadFile(t *testing.T) {
 			t.Fatalf("len(Servers) want: %s, got: %s",
 				test.dir, len(test.want.Servers), len(got.Servers))
 		}
-		if len(got.Servers) == 1 {
+		if len(got.Servers) == 0 {
+			// do nothing
+		} else if len(got.Servers) == 1 {
 			if got.Servers[0].Name != test.want.Servers[0].Name {
 				t.Fatalf("Servers[0].Name want: %s, got: %s",
 					test.dir, test.want.Servers[0].Name, got.Servers[0].Name)
@@ -69,6 +71,8 @@ func TestLoadFile(t *testing.T) {
 				t.Fatalf("Servers[0].ID want: %s, got: %s",
 					test.dir, test.want.Servers[0].ID, got.Servers[0].ID)
 			}
+		} else {
+			t.Fatalf("len(got.Servers) want 0 or 1, got: %s", len(got.Servers))
 		}
 	}
 }

@@ -37,6 +37,6 @@ func (config *Config) GetServerID(zoneName string, serverName string) (id string
 	if id == "" {
 		return id, fmt.Errorf("ServerID is not found by zoneName: %s, serverName: %s", zoneName, serverName)
 	} else {
-		return id, nil
+		return id, err
 	}
 }
