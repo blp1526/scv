@@ -9,11 +9,11 @@ import (
 )
 
 func main() {
+	log.SetFlags(0)
 	msg, err := cmd.Run()
 	if err != nil {
-		log.SetFlags(0)
 		log.Fatal(color.Red(fmt.Sprintf("fatal: %s", err)))
 	} else {
-		fmt.Println(msg)
+		log.Println(msg)
 	}
 }
