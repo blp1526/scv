@@ -1,4 +1,4 @@
-package api
+package scv
 
 import (
 	"encoding/json"
@@ -7,11 +7,12 @@ import (
 	"time"
 )
 
-type Vnc struct {
+type Api struct {
 	ZoneName          string
 	ServerID          string
 	AccessToken       string
 	AccessTokenSecret string
+	Logger            Logger
 }
 
 type Body struct {
@@ -20,18 +21,19 @@ type Body struct {
 	Port     string `json:"Port"`
 }
 
-func (vnc *Vnc) GetServerAddress() (serverAddress string, err error) {
+func (api *Api) GetServerAddress() (serverAddress string, err error) {
 	scheme := "https"
 	host := "secure.sakura.ad.jp"
-	path := "/cloud/zone/" + vnc.ZoneName + "/api/cloud/1.1/server/" + vnc.ServerID + "/vnc/proxy"
+	path := "/cloud/zone/" + api.ZoneName + "/api/cloud/1.1/server/" + api.ServerID + "/vnc/proxy"
 	url := scheme + "://" + host + path
+	api.Logger.Debug("URL: " + url)
 
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return serverAddress, err
 	}
 
-	req.SetBasicAuth(vnc.AccessToken, vnc.AccessTokenSecret)
+	req.SetBasicAuth(api.AccessToken, api.AccessTokenSecret)
 	client := &http.Client{Timeout: 10 * time.Second}
 	resp, err := client.Do(req)
 	if err != nil {

@@ -12,8 +12,8 @@ If you use this cli tool, you have to turn on a SAKURA Cloud server power.
 
 ## Usage
 
-* Create a config file at `$HOME/scv.json`.
-* Write a config file refering to [`scv.sample.json`](scv.sample.json).
+* Create a config file at `$HOME/.scv.json`.
+* Write a config file refering to [`.scv.sample.json`](.scv.sample.json).
   * This file's server name don't have to match the SAKURA cloud sever name.
 * Run below command.
 
