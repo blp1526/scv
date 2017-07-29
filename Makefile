@@ -1,16 +1,19 @@
-.PHONY: all zip build clean test
+.PHONY: all zip build clean test tmp
 
 all: build
 
 zip: build
-	@./zip
+	@./shellscripts/zip.sh
 
-build:
-	@go build -ldflags "-X github.com/blp1526/scv/cmd.version="$(shell ./version)
+build: tmp
+	@mkdir -p tmp
+	@go build -o tmp/scv -ldflags "-X github.com/blp1526/scv.version="$(shell ./shellscripts/version.sh) cmd/scv/scv.go
 
 clean:
-	@go clean
-	@rm -rf archives
+	@rm -rf tmp
 
 test:
-	@go test -v ./...
+	@go test -v
+
+tmp:
+	@mkdir -p tmp

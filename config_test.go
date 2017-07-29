@@ -1,4 +1,4 @@
-package conf
+package scv
 
 import (
 	"path/filepath"
@@ -6,8 +6,8 @@ import (
 )
 
 func TestLoadFile(t *testing.T) {
-	expectedPath, _ := filepath.Abs("../scv.sample.json")
-	unexpectedPath, _ := filepath.Abs("../scv.not.sample.json")
+	expectedPath, _ := filepath.Abs(".scv.sample.json")
+	unexpectedPath, _ := filepath.Abs(".scv.not.sample.json")
 	tests := []struct {
 		dir  string
 		want Config
@@ -110,7 +110,7 @@ func TestGetServerID(t *testing.T) {
 		},
 	}
 
-	absPath, _ := filepath.Abs("../scv.sample.json")
+	absPath, _ := filepath.Abs(".scv.sample.json")
 	config := Config{}
 	_ = config.LoadFile(absPath)
 

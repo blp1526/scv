@@ -1,4 +1,4 @@
-package conf
+package scv
 
 import (
 	"encoding/json"

@@ -18,8 +18,9 @@ else
   exit 1
 fi
 
-rm -rf "archives"
-path="archives/scv_${GOOS}_${GOARCH}"
+cd "tmp"
+rm -rf "scv_*"
+path="scv_${GOOS}_${GOARCH}"
 mkdir -p ${path}
 mv scv ${path}
 zip -r "${path}.zip" ${path} > /dev/null

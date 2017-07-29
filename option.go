@@ -1,14 +1,10 @@
-package cmd
+package scv
 
 import (
 	"flag"
 	"fmt"
 	"os/user"
 	"path/filepath"
-
-	"github.com/blp1526/scv/api"
-	"github.com/blp1526/scv/conf"
-	"github.com/blp1526/scv/logger"
 )
 
 var version string
@@ -26,9 +22,9 @@ func Run() (result string, err error) {
 	if optVersion {
 		return fmt.Sprintf("scv version %s", version), err
 	}
-	l := &logger.Logger{}
+	logger := &Logger{}
 	if optVerbose {
-		l.Verbose = true
+		logger.Verbose = true
 	}
 
 	argsSize := len(flag.Args())
@@ -41,9 +37,9 @@ func Run() (result string, err error) {
 	serverName := flag.Args()[1]
 
 	current, _ := user.Current()
-	dir := filepath.Join(current.HomeDir, "scv.json")
+	dir := filepath.Join(current.HomeDir, ".scv.json")
 
-	config := conf.Config{}
+	config := Config{}
 	err = config.LoadFile(dir)
 	if err != nil {
 		return result, err
@@ -53,15 +49,16 @@ func Run() (result string, err error) {
 	if err != nil {
 		return result, err
 	}
-	l.Debug("ServerID is " + serverID)
+	logger.Debug("ServerID: " + serverID)
 
-	vnc := api.Vnc{
+	api := Api{
 		ZoneName:          zoneName,
 		ServerID:          serverID,
 		AccessToken:       config.AccessToken,
 		AccessTokenSecret: config.AccessTokenSecret,
+		Logger:            *logger,
 	}
-	result, err = vnc.GetServerAddress()
+	result, err = api.GetServerAddress()
 	if err != nil {
 		return result, err
 	}
