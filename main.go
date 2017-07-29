@@ -1,19 +1,19 @@
 package main
 
 import (
-	"fmt"
-	"log"
+	"os"
 
 	"github.com/blp1526/scv/cmd"
-	"github.com/blp1526/scv/color"
+	"github.com/blp1526/scv/logger"
 )
 
 func main() {
-	log.SetFlags(0)
+	l := &logger.Logger{}
 	msg, err := cmd.Run()
 	if err != nil {
-		log.Fatal(color.Red(fmt.Sprintf("fatal: %s", err)))
+		l.Fatal(err)
+		os.Exit(1)
 	} else {
-		log.Println(msg)
+		l.Info(msg)
 	}
 }

@@ -24,3 +24,11 @@ $ scv ZONE_NAME SERVER_NAME
 # Example
 $ scv is1a ubuntu
 ```
+
+## Options
+
+|Name|Description|
+|-|-|
+|--help|print help|
+|--verbose|print debug log|
+|--version|print version number|

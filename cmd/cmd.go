@@ -8,6 +8,7 @@ import (
 
 	"github.com/blp1526/scv/api"
 	"github.com/blp1526/scv/conf"
+	"github.com/blp1526/scv/logger"
 )
 
 var version string
@@ -18,9 +19,16 @@ func Run() (result string, err error) {
 	var optVersion bool
 	flag.BoolVar(&optVersion, "version", false, "print version number")
 
+	var optVerbose bool
+	flag.BoolVar(&optVerbose, "verbose", false, "print debug log")
+
 	flag.Parse()
 	if optVersion {
 		return fmt.Sprintf("scv version %s", version), err
+	}
+	l := &logger.Logger{}
+	if optVerbose {
+		l.Verbose = true
 	}
 
 	argsSize := len(flag.Args())
@@ -45,6 +53,7 @@ func Run() (result string, err error) {
 	if err != nil {
 		return result, err
 	}
+	l.Debug("ServerID is " + serverID)
 
 	vnc := api.Vnc{
 		ZoneName:          zoneName,
