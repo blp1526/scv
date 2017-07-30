@@ -29,6 +29,6 @@ $ scv is1a ubuntu
 
 |Name|Description|
 |-|-|
-|--help|print help|
-|--verbose|print debug log|
-|--version|print version number|
+|-h, --help|print help message and exit|
+|-v, --verbose|print debug log|
+|-V, --version|print version and exit|
