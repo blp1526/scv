@@ -10,25 +10,50 @@ import (
 var version string
 
 const expectedArgsSize = 2
+const help = `
+Usage: scv [options] [zone name] [server name]
+
+Options:
+  -h, --help        print help message and exit
+  -v, --verbose     print debug log
+  -V, --version     print version and exit
+`
 
 func Run() (result string, err error) {
+	var optHelp bool
+	var optLongHelp bool
+	flag.BoolVar(&optHelp, "h", false, "")
+	flag.BoolVar(&optLongHelp, "help", false, "")
+
 	var optVersion bool
-	flag.BoolVar(&optVersion, "version", false, "print version number")
+	var optLongVersion bool
+	flag.BoolVar(&optVersion, "V", false, "")
+	flag.BoolVar(&optLongVersion, "version", false, "")
 
 	var optVerbose bool
-	flag.BoolVar(&optVerbose, "verbose", false, "print debug log")
+	var optLongVerbose bool
+	flag.BoolVar(&optVerbose, "v", false, "")
+	flag.BoolVar(&optLongVerbose, "verbose", false, "")
 
 	flag.Parse()
-	if optVersion {
+
+	if optHelp || optLongHelp {
+		return fmt.Sprintf("%s", help), err
+	}
+
+	if optVersion || optLongVersion {
 		return fmt.Sprintf("scv version %s", version), err
 	}
+
 	logger := &Logger{}
-	if optVerbose {
+	if optVerbose || optLongVerbose {
 		logger.Verbose = true
 	}
 
 	argsSize := len(flag.Args())
-	if argsSize != expectedArgsSize {
+	if argsSize == 0 {
+		return fmt.Sprintf("%s", help), err
+	} else if argsSize != expectedArgsSize {
 		return result, fmt.Errorf("Expected arguments size is %d, but given %d",
 			expectedArgsSize, argsSize)
 	}
