@@ -21,7 +21,11 @@ Options:
   -V, --version     print version and exit
 `
 
-func Run() (result string, err error) {
+type CLI struct {
+	Logger Logger
+}
+
+func (cli *CLI) Run() (result string, err error) {
 	var optHelp bool
 	var optLongHelp bool
 	flag.BoolVar(&optHelp, "h", false, "")
@@ -47,9 +51,8 @@ func Run() (result string, err error) {
 		return fmt.Sprintf("scv version %s", version), err
 	}
 
-	logger := &Logger{}
 	if optVerbose || optLongVerbose {
-		logger.Verbose = true
+		cli.Logger.Verbose = true
 	}
 
 	argsSize := len(flag.Args())
@@ -76,14 +79,15 @@ func Run() (result string, err error) {
 	if err != nil {
 		return result, err
 	}
-	logger.Debug("ServerID: " + serverID)
+	cli.Logger.Debug("ServerID: " + serverID)
 
-	api := API{Logger: *logger}
+	api := &API{}
 	url := api.URL(zoneName, serverID)
 	body, err := api.GET(url, config.AccessToken, config.AccessTokenSecret)
 	if err != nil {
 		return result, err
 	}
+	cli.Logger.Debug("URL: " + url)
 
 	vnc := &VNC{}
 	json.NewDecoder(bytes.NewReader(body)).Decode(vnc)

@@ -7,9 +7,7 @@ import (
 	"time"
 )
 
-type API struct {
-	Logger Logger
-}
+type API struct{}
 
 func (api *API) URL(zoneName string, serverID string) (url string) {
 	scheme := "https"
