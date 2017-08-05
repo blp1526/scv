@@ -76,7 +76,7 @@ func Run() (result string, err error) {
 	}
 	logger.Debug("ServerID: " + serverID)
 
-	api := Api{
+	api := API{
 		ZoneName:          zoneName,
 		ServerID:          serverID,
 		AccessToken:       config.AccessToken,
