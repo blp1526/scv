@@ -15,12 +15,6 @@ type API struct {
 	Logger            Logger
 }
 
-type VNC struct {
-	Host     string `json:"Host"`
-	Password string `json:"Password"`
-	Port     string `json:"Port"`
-}
-
 func (api *API) URL() (url string) {
 	scheme := "https"
 	host := "secure.sakura.ad.jp"
@@ -52,6 +46,6 @@ func (api *API) GetServerAddress() (serverAddress string, err error) {
 	defer resp.Body.Close()
 	vnc := &VNC{}
 	json.NewDecoder(resp.Body).Decode(vnc)
-	serverAddress = "vnc://:" + vnc.Password + "@" + vnc.Host + ":" + vnc.Port
+	serverAddress = vnc.Path()
 	return serverAddress, err
 }

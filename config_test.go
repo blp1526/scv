@@ -77,7 +77,7 @@ func TestLoadFile(t *testing.T) {
 	}
 }
 
-func TestGetServerID(t *testing.T) {
+func TestServerID(t *testing.T) {
 	tests := []struct {
 		zoneName   string
 		serverName string
@@ -115,7 +115,7 @@ func TestGetServerID(t *testing.T) {
 	_ = config.LoadFile(absPath)
 
 	for _, test := range tests {
-		got, err := config.GetServerID(test.zoneName, test.serverName)
+		got, err := config.ServerID(test.zoneName, test.serverName)
 		if !test.err && err != nil {
 			t.Fatalf("zoneName: %s, serverName: %s", test.zoneName, test.serverName)
 		}

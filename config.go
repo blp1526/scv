@@ -28,7 +28,7 @@ func (config *Config) LoadFile(dir string) (err error) {
 	return err
 }
 
-func (config *Config) GetServerID(zoneName string, serverName string) (id string, err error) {
+func (config *Config) ServerID(zoneName string, serverName string) (id string, err error) {
 	for i := 0; i < len(config.Servers); i++ {
 		if config.Servers[i].ZoneName == zoneName && config.Servers[i].Name == serverName {
 			id = config.Servers[i].ID
