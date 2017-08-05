@@ -70,7 +70,7 @@ func Run() (result string, err error) {
 		return result, err
 	}
 
-	serverID, err := config.GetServerID(zoneName, serverName)
+	serverID, err := config.ServerID(zoneName, serverName)
 	if err != nil {
 		return result, err
 	}
