@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-type Api struct {
+type API struct {
 	ZoneName          string
 	ServerID          string
 	AccessToken       string
@@ -15,17 +15,22 @@ type Api struct {
 	Logger            Logger
 }
 
-type Body struct {
+type VNC struct {
 	Host     string `json:"Host"`
 	Password string `json:"Password"`
 	Port     string `json:"Port"`
 }
 
-func (api *Api) GetServerAddress() (serverAddress string, err error) {
+func (api *API) URL() (url string) {
 	scheme := "https"
 	host := "secure.sakura.ad.jp"
 	path := "/cloud/zone/" + api.ZoneName + "/api/cloud/1.1/server/" + api.ServerID + "/vnc/proxy"
-	url := scheme + "://" + host + path
+	url = scheme + "://" + host + path
+	return url
+}
+
+func (api *API) GetServerAddress() (serverAddress string, err error) {
+	url := api.URL()
 	api.Logger.Debug("URL: " + url)
 
 	req, err := http.NewRequest("GET", url, nil)
@@ -45,8 +50,8 @@ func (api *Api) GetServerAddress() (serverAddress string, err error) {
 		return serverAddress, fmt.Errorf("Bad response status (got %d, expected 201)", resp.StatusCode)
 	}
 	defer resp.Body.Close()
-	body := &Body{}
-	json.NewDecoder(resp.Body).Decode(body)
-	serverAddress = "vnc://:" + body.Password + "@" + body.Host + ":" + body.Port
+	vnc := &VNC{}
+	json.NewDecoder(resp.Body).Decode(vnc)
+	serverAddress = "vnc://:" + vnc.Password + "@" + vnc.Host + ":" + vnc.Port
 	return serverAddress, err
 }
