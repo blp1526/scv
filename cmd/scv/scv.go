@@ -7,12 +7,12 @@ import (
 )
 
 func main() {
-	logger := &scv.Logger{}
-	msg, err := scv.Run()
+	cli := &scv.CLI{}
+	result, err := cli.Run()
 	if err != nil {
-		logger.Fatal(err)
+		cli.Logger.Fatal(err)
 		os.Exit(1)
 	} else {
-		logger.Info(msg)
+		cli.Logger.Info(result)
 	}
 }
