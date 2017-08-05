@@ -1,6 +1,8 @@
 package scv
 
 import (
+	"bytes"
+	"encoding/json"
 	"flag"
 	"fmt"
 	"os/user"
@@ -76,16 +78,15 @@ func Run() (result string, err error) {
 	}
 	logger.Debug("ServerID: " + serverID)
 
-	api := API{
-		ZoneName:          zoneName,
-		ServerID:          serverID,
-		AccessToken:       config.AccessToken,
-		AccessTokenSecret: config.AccessTokenSecret,
-		Logger:            *logger,
-	}
-	result, err = api.GetServerAddress()
+	api := API{Logger: *logger}
+	url := api.URL(zoneName, serverID)
+	body, err := api.GET(url, config.AccessToken, config.AccessTokenSecret)
 	if err != nil {
 		return result, err
 	}
+
+	vnc := &VNC{}
+	json.NewDecoder(bytes.NewReader(body)).Decode(vnc)
+	result = vnc.Path()
 	return result, err
 }
