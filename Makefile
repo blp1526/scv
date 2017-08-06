@@ -3,7 +3,7 @@
 VERSION = $(shell ./shellscripts/version.sh)
 LDFLAGS = -ldflags "-X github.com/blp1526/scv.Version="$(VERSION)
 
-all: build
+all: test
 
 zip: build
 	@./shellscripts/zip.sh
