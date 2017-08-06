@@ -12,7 +12,7 @@ func TestLoggerFormat(t *testing.T) {
 		err       bool
 	}{
 		{
-			colorName: "perple",
+			colorName: "purple",
 			level:     "foo",
 			want:      "",
 			err:       true,
