@@ -1,6 +1,6 @@
 # scv
 
-VNC path creator for SAKURA Cloud
+VNC path creator for [SAKURA Cloud](http://cloud.sakura.ad.jp)
 
 ## Installation
 
@@ -24,6 +24,8 @@ $ scv ZONE_NAME SERVER_NAME
 # Example
 $ scv is1a ubuntu
 ```
+
+This command uses SAKURA Cloud API [GET/server/:serverid/vnc/proxy](http://developer.sakura.ad.jp/cloud/api/1.1/server/#get_server_serverid_vnc_proxy).
 
 ## Options
 
