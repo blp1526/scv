@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestLoadFile(t *testing.T) {
+func TestConfigLoadFile(t *testing.T) {
 	expectedPath, _ := filepath.Abs(".scv.sample.json")
 	unexpectedPath, _ := filepath.Abs(".scv.not.sample.json")
 	tests := []struct {
@@ -77,7 +77,7 @@ func TestLoadFile(t *testing.T) {
 	}
 }
 
-func TestServerID(t *testing.T) {
+func TestConfigServerID(t *testing.T) {
 	tests := []struct {
 		zoneName   string
 		serverName string

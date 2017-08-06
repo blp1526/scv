@@ -11,7 +11,6 @@ import (
 
 var version string
 
-const expectedArgsSize = 2
 const help = `
 Usage: scv [options] [zone name] [server name]
 
@@ -43,10 +42,6 @@ func (cli *CLI) Run() (result string, err error) {
 
 	flag.Parse()
 
-	if optHelp || optLongHelp {
-		return fmt.Sprintf("%s", help), err
-	}
-
 	if optVersion || optLongVersion {
 		return fmt.Sprintf("scv version %s", version), err
 	}
@@ -55,12 +50,15 @@ func (cli *CLI) Run() (result string, err error) {
 		cli.Logger.Verbose = true
 	}
 
-	argsSize := len(flag.Args())
-	if argsSize == 0 {
+	optSize := len(flag.Args())
+	if optHelp || optLongHelp || optSize == 0 {
 		return fmt.Sprintf("%s", help), err
-	} else if argsSize != expectedArgsSize {
-		return result, fmt.Errorf("Expected arguments size is %d, but given %d",
-			expectedArgsSize, argsSize)
+	}
+
+	valid := cli.ValidateOptSize(optSize)
+	if !valid {
+		err = fmt.Errorf("Expected arguments size is 2, but given %d", optSize)
+		return result, err
 	}
 
 	zoneName := flag.Args()[0]
@@ -93,4 +91,8 @@ func (cli *CLI) Run() (result string, err error) {
 	json.NewDecoder(bytes.NewReader(body)).Decode(vnc)
 	result = vnc.Path()
 	return result, err
+}
+
+func (cli *CLI) ValidateOptSize(optSize int) bool {
+	return optSize == 2
 }
