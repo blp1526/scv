@@ -9,16 +9,7 @@ import (
 	"path/filepath"
 )
 
-var version string
-
-const help = `
-Usage: scv [options] [zone name] [server name]
-
-Options:
-  -h, --help        print help message and exit
-  -v, --verbose     print debug log
-  -V, --version     print version and exit
-`
+var Version string
 
 type CLI struct {
 	Logger Logger
@@ -43,7 +34,8 @@ func (cli *CLI) Run() (result string, err error) {
 	flag.Parse()
 
 	if optVersion || optLongVersion {
-		return fmt.Sprintf("scv version %s", version), err
+		result = cli.VersionFormat(Version)
+		return result, err
 	}
 
 	if optVerbose || optLongVerbose {
@@ -52,7 +44,8 @@ func (cli *CLI) Run() (result string, err error) {
 
 	optSize := len(flag.Args())
 	if optHelp || optLongHelp || optSize == 0 {
-		return fmt.Sprintf("%s", help), err
+		result = cli.Help()
+		return result, err
 	}
 
 	valid := cli.ValidateOptSize(optSize)
@@ -95,4 +88,19 @@ func (cli *CLI) Run() (result string, err error) {
 
 func (cli *CLI) ValidateOptSize(optSize int) bool {
 	return optSize == 2
+}
+
+func (cli *CLI) Help() string {
+	return `
+Usage: scv [options] [zone name] [server name]
+
+Options:
+  -h, --help        print help message and exit
+  -v, --verbose     print debug log
+  -V, --version     print version and exit
+`
+}
+
+func (cli *CLI) VersionFormat(version string) string {
+	return fmt.Sprintf("scv version %s", version)
 }
