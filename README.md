@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/blp1526/scv.svg?branch=master)](https://travis-ci.org/blp1526/scv)
+
 # scv
 
 VNC path creator for [SAKURA Cloud](http://cloud.sakura.ad.jp)
@@ -19,7 +21,7 @@ If you use this cli tool, you have to turn on a SAKURA Cloud server power.
 
 ```
 # Format
-$ scv ZONE_NAME SERVER_NAME
+$ scv [options] [zone name] [server name]
 
 # Example
 $ scv is1a ubuntu
