@@ -1,7 +1,7 @@
 .PHONY: all zip build clean test tmp
 
 VERSION = $(shell ./shellscripts/version.sh)
-LDFLAGS = -ldflags "-X github.com/blp1526/scv.version="$(VERSION)
+LDFLAGS = -ldflags "-X github.com/blp1526/scv.Version="$(VERSION)
 
 all: build
 
