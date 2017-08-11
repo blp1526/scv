@@ -26,4 +26,4 @@ mv scv ${path}
 zip -r "${path}.zip" ${path} > /dev/null
 rm -rf "${path}"
 
-echo "${path}.zip created"
+echo "tmp/${path}.zip created"
