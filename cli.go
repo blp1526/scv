@@ -9,6 +9,15 @@ import (
 	"path/filepath"
 )
 
+const Help = `
+Usage: scv [options] [zone name] [server name]
+
+Options:
+  -h, --help        print help message and exit
+  -v, --verbose     print debug log
+  -V, --version     print version and exit
+`
+
 var Version string
 
 type CLI struct {
@@ -34,7 +43,7 @@ func (cli *CLI) Run() (result string, err error) {
 	flag.Parse()
 
 	if optVersion || optLongVersion {
-		result = cli.VersionFormat(Version)
+		result = cli.Versionf(Version)
 		return result, err
 	}
 
@@ -44,7 +53,7 @@ func (cli *CLI) Run() (result string, err error) {
 
 	optSize := len(flag.Args())
 	if optHelp || optLongHelp || optSize == 0 {
-		result = cli.Help()
+		result = Help
 		return result, err
 	}
 
@@ -74,11 +83,11 @@ func (cli *CLI) Run() (result string, err error) {
 
 	api := &API{}
 	url := api.URL(zoneName, serverID)
+	cli.Logger.Debug("URL: " + url)
 	body, err := api.GET(url, config.AccessToken, config.AccessTokenSecret)
 	if err != nil {
 		return result, err
 	}
-	cli.Logger.Debug("URL: " + url)
 
 	vnc := &VNC{}
 	json.NewDecoder(bytes.NewReader(body)).Decode(vnc)
@@ -90,17 +99,6 @@ func (cli *CLI) ValidateOptSize(optSize int) bool {
 	return optSize == 2
 }
 
-func (cli *CLI) Help() string {
-	return `
-Usage: scv [options] [zone name] [server name]
-
-Options:
-  -h, --help        print help message and exit
-  -v, --verbose     print debug log
-  -V, --version     print version and exit
-`
-}
-
-func (cli *CLI) VersionFormat(version string) string {
+func (cli *CLI) Versionf(version string) string {
 	return fmt.Sprintf("scv version %s", version)
 }

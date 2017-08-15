@@ -14,14 +14,8 @@ tmp: test
 	@echo "\n######## TMP ########\n"
 	mkdir -p tmp
 
-.PHONY: coverage
-coverage: tmp
-	@echo "\n######## COVERAGE ########\n"
-	go test --coverprofile=tmp/c.out
-	go tool cover --func=tmp/c.out
-
 .PHONY: build
-build: coverage
+build: tmp
 	@echo "\n######## BUILD ########\n"
 	go build $(LDFLAGS) -o tmp/scv cmd/scv/scv.go
 

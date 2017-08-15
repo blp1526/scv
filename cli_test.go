@@ -39,7 +39,7 @@ func TestCLIVersionFormat(t *testing.T) {
 
 	cli := &CLI{}
 	for _, test := range tests {
-		got := cli.VersionFormat(test.version)
+		got := cli.Versionf(test.version)
 		if got != test.want {
 			t.Fatalf("want: %s, got: %s", test.want, got)
 		}
