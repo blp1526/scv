@@ -7,7 +7,12 @@ import (
 )
 
 func main() {
-	cli := &scv.CLI{}
+	cli := &scv.CLI{
+		Logger: scv.Logger{
+			OutStream: os.Stdout,
+			ErrStream: os.Stderr,
+		},
+	}
 	result, err := cli.Run()
 	if err != nil {
 		cli.Logger.Fatal(err)

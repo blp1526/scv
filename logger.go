@@ -1,15 +1,20 @@
 package scv
 
-import "fmt"
+import (
+	"fmt"
+	"io"
+)
 
 type Logger struct {
-	Verbose bool
+	Verbose   bool
+	OutStream io.Writer
+	ErrStream io.Writer
 }
 
 func (logger *Logger) Debug(a string) (n int, err error) {
 	if logger.Verbose {
 		format, _ := logger.Format("lightGray", "debug")
-		n, err = fmt.Printf(format, a)
+		n, err = fmt.Fprintf(logger.OutStream, format, a)
 		return n, err
 	} else {
 		return n, err
@@ -17,14 +22,14 @@ func (logger *Logger) Debug(a string) (n int, err error) {
 }
 
 func (logger *Logger) Info(a string) (n int, err error) {
-	n, err = fmt.Println(a)
+	n, err = fmt.Fprintln(logger.OutStream, a)
 	return n, err
 }
 
 // NOTE: (a interface{}) is expected to be string or error.
 func (logger *Logger) Fatal(a interface{}) (n int, err error) {
 	format, _ := logger.Format("red", "fatal")
-	n, err = fmt.Printf(format, a)
+	n, err = fmt.Fprintf(logger.ErrStream, format, a)
 	return n, err
 }
 
