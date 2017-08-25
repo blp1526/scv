@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"os"
 )
 
 type Config struct {
@@ -39,4 +40,23 @@ func (config *Config) ServerID(zoneName string, serverName string) (id string, e
 	} else {
 		return id, err
 	}
+}
+
+func (config *Config) CreateFile(dir string) (result string, err error) {
+	_, err = os.Stat(dir)
+	if err == nil {
+		return result, fmt.Errorf("Already you have %s", dir)
+	}
+
+	j, err := json.MarshalIndent(config, "", "  ")
+	if err != nil {
+		return result, err
+	}
+
+	err = ioutil.WriteFile(dir, j, 0600)
+	if err != nil {
+		return result, err
+	}
+
+	return fmt.Sprintf("%s created", dir), err
 }

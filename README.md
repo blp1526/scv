@@ -14,7 +14,7 @@ If you use this cli tool, you have to turn on a SAKURA Cloud server power.
 
 ## Usage
 
-* Create a config file at `$HOME/.scv.json`.
+* Create a config file at `$HOME/.scv.json` by `scv --init`.
 * Write a config file refering to [`.scv.sample.json`](.scv.sample.json).
   * This file's server name don't have to match the SAKURA cloud sever name.
 * Run below command.
@@ -34,5 +34,6 @@ This command uses SAKURA Cloud API [GET/server/:serverid/vnc/proxy](http://devel
 |Name|Description|
 |-|-|
 |-h, --help|print help message and exit|
+|--init|create $HOME/.scv.json if it does not exist|
 |-v, --verbose|print debug log|
 |-V, --version|print version and exit|

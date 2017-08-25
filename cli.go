@@ -14,6 +14,7 @@ Usage: scv [options] [zone name] [server name]
 
 Options:
   -h, --help        print help message and exit
+  --init            create $HOME/.scv.json if it does not exist
   -v, --verbose     print debug log
   -V, --version     print version and exit
 `
@@ -30,6 +31,9 @@ func (cli *CLI) Run() (result string, err error) {
 	flag.BoolVar(&optHelp, "h", false, "")
 	flag.BoolVar(&optLongHelp, "help", false, "")
 
+	var optInit bool
+	flag.BoolVar(&optInit, "init", false, "")
+
 	var optVersion bool
 	var optLongVersion bool
 	flag.BoolVar(&optVersion, "V", false, "")
@@ -44,6 +48,14 @@ func (cli *CLI) Run() (result string, err error) {
 
 	if optVersion || optLongVersion {
 		result = cli.Versionf(Version)
+		return result, err
+	}
+
+	if optInit {
+		current, _ := user.Current()
+		dir := filepath.Join(current.HomeDir, ".scv.json")
+		config := &Config{Servers: []Server{}}
+		result, err = config.CreateFile(dir)
 		return result, err
 	}
 
@@ -69,7 +81,7 @@ func (cli *CLI) Run() (result string, err error) {
 	current, _ := user.Current()
 	dir := filepath.Join(current.HomeDir, ".scv.json")
 
-	config := Config{}
+	config := &Config{}
 	err = config.LoadFile(dir)
 	if err != nil {
 		return result, err
