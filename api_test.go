@@ -3,6 +3,7 @@ package scv
 import (
 	"net/http"
 	"net/http/httptest"
+	"reflect"
 	"testing"
 )
 
@@ -55,21 +56,21 @@ func TestAPIGET(t *testing.T) {
 			url:               mockServer.URL,
 			accessToken:       "",
 			accessTokenSecret: "",
-			want:              []byte(""),
+			want:              nil,
 			err:               true,
 		},
 		{
 			url:               mockServer.URL,
 			accessToken:       "xxxx",
 			accessTokenSecret: "yyyy",
-			want:              []byte(""),
+			want:              nil,
 			err:               true,
 		},
 		{
 			url:               mockServer.URL,
 			accessToken:       "yyyy",
 			accessTokenSecret: "xxxx",
-			want:              []byte(""),
+			want:              nil,
 			err:               true,
 		},
 		{
@@ -90,8 +91,8 @@ func TestAPIGET(t *testing.T) {
 		if !test.err && err != nil {
 			t.Fatalf("test.err: %s, err: %s", test.err, err)
 		}
-		if string(test.want) != string(got) {
-			t.Fatalf("test.want: %s, got: %s", string(test.want), string(got))
+		if !reflect.DeepEqual(test.want, got) {
+			t.Fatalf("test.want: %s, got: %s", test.want, got)
 		}
 	}
 }
