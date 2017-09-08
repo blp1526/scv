@@ -3,8 +3,12 @@
 unames=$(uname -s)
 if [ ${unames} = "Linux" ]; then
   GOOS="linux"
+  cmd="tar zcvf"
+  ext=".tar.gz"
 elif [ ${unames} = "Darwin" ]; then
   GOOS="darwin"
+  cmd="zip -r"
+  ext=".zip"
 else
   echo "fatal: Unsupported OS"
   exit 1
@@ -18,12 +22,14 @@ else
   exit 1
 fi
 
-cd "tmp"
+wd="tmp"
+cd ${wd}
 rm -rf "scv_*"
 path="scv_${GOOS}_${GOARCH}"
 mkdir -p ${path}
 mv scv ${path}
-zip -r "${path}.zip" ${path} > /dev/null
+
+${cmd} "${path}${ext}" ${path} > /dev/null
 rm -rf "${path}"
 
-echo "tmp/${path}.zip created"
+echo "${wd}/${path}${ext} created"
