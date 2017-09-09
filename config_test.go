@@ -1,6 +1,7 @@
 package scv
 
 import (
+	"os"
 	"path/filepath"
 	"testing"
 )
@@ -125,6 +126,47 @@ func TestConfigServerID(t *testing.T) {
 		if got != test.want {
 			t.Fatalf("zoneName: %s, serverName: %s, want: %s, got: %s",
 				test.zoneName, test.serverName, test.want, got)
+		}
+	}
+}
+
+func TestConfigCreateFile(t *testing.T) {
+	tests := []struct {
+		dir  string
+		want string
+		err  bool
+	}{
+		{
+			dir:  "tmp/.scv.test.json",
+			want: "tmp/.scv.test.json created",
+			err:  false,
+		},
+	}
+
+	for _, tt := range tests {
+		// setup
+		err := os.MkdirAll("tmp", 0775)
+		if err != nil {
+			t.Fatalf("setup failed")
+		}
+
+		config := &Config{}
+		got, err := config.CreateFile(tt.dir)
+
+		if tt.err && err == nil {
+			t.Fatalf("tt.err: %s, err: %s", tt.err, err)
+		}
+		if !tt.err && err != nil {
+			t.Fatalf("tt.err: %s, err: %s", tt.err, err)
+		}
+		if got != tt.want {
+			t.Fatalf("got: %s, tt.want: %s", got, tt.want)
+		}
+
+		// tearDown
+		err = os.RemoveAll("tmp")
+		if err != nil {
+			t.Fatalf("tearDown failed")
 		}
 	}
 }
