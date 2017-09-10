@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"os/user"
 	"path/filepath"
+	"strings"
 )
 
 const Help = `
@@ -47,7 +48,7 @@ func (cli *CLI) Run() (result string, err error) {
 	flag.Parse()
 
 	if optVersion || optLongVersion {
-		result = cli.Versionf(Version)
+		result, err = cli.Versionf(Version)
 		return result, err
 	}
 
@@ -111,6 +112,10 @@ func (cli *CLI) ValidateOptSize(optSize int) bool {
 	return optSize == 2
 }
 
-func (cli *CLI) Versionf(version string) string {
-	return fmt.Sprintf("scv version %s", version)
+func (cli *CLI) Versionf(version string) (string, error) {
+	a := strings.Split(version, "-")
+	if len(a) > 2 {
+		return fmt.Sprintf("scv version %s, build %s", a[0][1:], a[2]), nil
+	}
+	return "", fmt.Errorf("version: %s", version)
 }

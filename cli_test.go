@@ -30,19 +30,31 @@ func TestCLIVersionFormat(t *testing.T) {
 	tests := []struct {
 		version string
 		want    string
+		err     bool
 	}{
 		{
-			version: "0.0.1",
-			want:    "scv version 0.0.1",
+			version: "unexpected value",
+			want:    "",
+			err:     true,
+		},
+		{
+			version: "v0.0.5-36-g8c7d97d",
+			want:    "scv version 0.0.5, build g8c7d97d",
+			err:     false,
 		},
 	}
 
 	cli := &CLI{}
 	for _, test := range tests {
-		got := cli.Versionf(test.version)
+		got, err := cli.Versionf(test.version)
+		if test.err && err == nil {
+			t.Fatalf("test.err: %s, err: %s", test.err, err)
+		}
+		if !test.err && err != nil {
+			t.Fatalf("test.err: %s, err: %s", test.err, err)
+		}
 		if got != test.want {
 			t.Fatalf("want: %s, got: %s", test.want, got)
 		}
 	}
-
 }

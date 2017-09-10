@@ -1,4 +1,4 @@
-VERSION = $(shell ./shellscripts/version.sh)
+VERSION = $(shell git describe --dirty --tags)
 LDFLAGS = -ldflags "-X github.com/blp1526/scv.Version="$(VERSION)
 
 .PHONY: all
