@@ -13,7 +13,7 @@ func main() {
 			ErrStream: os.Stderr,
 		},
 	}
-	result, err := cli.Run()
+	result, err := cli.Run(os.Args[1:])
 	if err != nil {
 		cli.Logger.Fatal(err)
 		os.Exit(1)

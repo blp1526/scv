@@ -26,26 +26,31 @@ type CLI struct {
 	Logger Logger
 }
 
-func (cli *CLI) Run() (result string, err error) {
+func (cli *CLI) Run(args []string) (result string, err error) {
+	f := flag.NewFlagSet("scv", flag.ContinueOnError)
+
 	var optHelp bool
 	var optLongHelp bool
-	flag.BoolVar(&optHelp, "h", false, "")
-	flag.BoolVar(&optLongHelp, "help", false, "")
+	f.BoolVar(&optHelp, "h", false, "")
+	f.BoolVar(&optLongHelp, "help", false, "")
 
 	var optInit bool
-	flag.BoolVar(&optInit, "init", false, "")
+	f.BoolVar(&optInit, "init", false, "")
 
 	var optVersion bool
 	var optLongVersion bool
-	flag.BoolVar(&optVersion, "V", false, "")
-	flag.BoolVar(&optLongVersion, "version", false, "")
+	f.BoolVar(&optVersion, "V", false, "")
+	f.BoolVar(&optLongVersion, "version", false, "")
 
 	var optVerbose bool
 	var optLongVerbose bool
-	flag.BoolVar(&optVerbose, "v", false, "")
-	flag.BoolVar(&optLongVerbose, "verbose", false, "")
+	f.BoolVar(&optVerbose, "v", false, "")
+	f.BoolVar(&optLongVerbose, "verbose", false, "")
 
-	flag.Parse()
+	err = f.Parse(args)
+	if err != nil {
+		return result, err
+	}
 
 	if optVersion || optLongVersion {
 		result, err = cli.Versionf(Version)
@@ -64,7 +69,7 @@ func (cli *CLI) Run() (result string, err error) {
 		cli.Logger.Verbose = true
 	}
 
-	optSize := len(flag.Args())
+	optSize := len(f.Args())
 	if optHelp || optLongHelp || optSize == 0 {
 		result = Help
 		return result, err
@@ -76,8 +81,8 @@ func (cli *CLI) Run() (result string, err error) {
 		return result, err
 	}
 
-	zoneName := flag.Args()[0]
-	serverName := flag.Args()[1]
+	zoneName := f.Args()[0]
+	serverName := f.Args()[1]
 
 	current, _ := user.Current()
 	dir := filepath.Join(current.HomeDir, ".scv.json")
