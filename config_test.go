@@ -46,34 +46,34 @@ func TestConfigLoadFile(t *testing.T) {
 			t.Fatalf("dir: %s", test.dir)
 		}
 		if got.AccessToken != test.want.AccessToken {
-			t.Fatalf("AccessToken want: %s, got: %s",
+			t.Fatalf("dir: %s, AccessToken want: %s, got: %s",
 				test.dir, test.want.AccessToken, got.AccessToken)
 		}
 		if got.AccessTokenSecret != test.want.AccessTokenSecret {
-			t.Fatalf("AccessTokenSecret want: %s, got: %s",
+			t.Fatalf("dir: %s, AccessTokenSecret want: %s, got: %s",
 				test.dir, test.want.AccessTokenSecret, got.AccessTokenSecret)
 		}
 		if len(got.Servers) != len(test.want.Servers) {
-			t.Fatalf("len(Servers) want: %s, got: %s",
+			t.Fatalf("dir: %s, len(Servers) want: %v, got: %v",
 				test.dir, len(test.want.Servers), len(got.Servers))
 		}
 		if len(got.Servers) == 0 {
 			// do nothing
 		} else if len(got.Servers) == 1 {
 			if got.Servers[0].Name != test.want.Servers[0].Name {
-				t.Fatalf("Servers[0].Name want: %s, got: %s",
+				t.Fatalf("dir: %s, Servers[0].Name want: %s, got: %s",
 					test.dir, test.want.Servers[0].Name, got.Servers[0].Name)
 			}
 			if got.Servers[0].ZoneName != test.want.Servers[0].ZoneName {
-				t.Fatalf("Servers[0].ZoneName want: %s, got: %s",
+				t.Fatalf("dir: %s, Servers[0].ZoneName want: %s, got: %s",
 					test.dir, test.want.Servers[0].ZoneName, got.Servers[0].ZoneName)
 			}
 			if got.Servers[0].ID != test.want.Servers[0].ID {
-				t.Fatalf("Servers[0].ID want: %s, got: %s",
+				t.Fatalf("dir: %s, Servers[0].ID want: %s, got: %s",
 					test.dir, test.want.Servers[0].ID, got.Servers[0].ID)
 			}
 		} else {
-			t.Fatalf("len(got.Servers) want 0 or 1, got: %s", len(got.Servers))
+			t.Fatalf("len(got.Servers) want 0 or 1, got: %v", len(got.Servers))
 		}
 	}
 }
@@ -154,10 +154,10 @@ func TestConfigCreateFile(t *testing.T) {
 		got, err := config.CreateFile(tt.dir)
 
 		if tt.err && err == nil {
-			t.Fatalf("tt.err: %s, err: %s", tt.err, err)
+			t.Fatalf("tt.err: %v, err: %v", tt.err, err)
 		}
 		if !tt.err && err != nil {
-			t.Fatalf("tt.err: %s, err: %s", tt.err, err)
+			t.Fatalf("tt.err: %v, err: %v", tt.err, err)
 		}
 		if got != tt.want {
 			t.Fatalf("got: %s, tt.want: %s", got, tt.want)

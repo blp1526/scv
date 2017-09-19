@@ -21,7 +21,7 @@ func TestCLIValidOptSize(t *testing.T) {
 	for _, test := range tests {
 		got := cli.ValidateOptSize(test.optSize)
 		if got != test.want {
-			t.Fatalf("want: %s, got: %s", test.want, got)
+			t.Fatalf("want: %v, got: %v", test.want, got)
 		}
 	}
 }
@@ -48,10 +48,10 @@ func TestCLIVersionFormat(t *testing.T) {
 	for _, test := range tests {
 		got, err := cli.Versionf(test.version)
 		if test.err && err == nil {
-			t.Fatalf("test.err: %s, err: %s", test.err, err)
+			t.Fatalf("test.err: %v, err: %v", test.err, err)
 		}
 		if !test.err && err != nil {
-			t.Fatalf("test.err: %s, err: %s", test.err, err)
+			t.Fatalf("test.err: %v, err: %v", test.err, err)
 		}
 		if got != test.want {
 			t.Fatalf("want: %s, got: %s", test.want, got)
@@ -80,6 +80,41 @@ func TestCLIRun(t *testing.T) {
 			args:    []string{"--version"},
 			want:    "scv version 0.0.5, build g8c7d97d",
 			err:     false,
+		},
+		{
+			spec:    "short help",
+			version: "v0.0.5-36-g8c7d97d",
+			args:    []string{"-h"},
+			want:    Help,
+			err:     false,
+		},
+		{
+			spec:    "long help",
+			version: "v0.0.5-36-g8c7d97d",
+			args:    []string{"--help"},
+			want:    Help,
+			err:     false,
+		},
+		{
+			spec:    "without args",
+			version: "v0.0.5-36-g8c7d97d",
+			args:    []string{},
+			want:    Help,
+			err:     false,
+		},
+		{
+			spec:    "invalid opt size",
+			version: "v0.0.5-36-g8c7d97d",
+			args:    []string{"tk1a"},
+			want:    "",
+			err:     true,
+		},
+		{
+			spec:    "serverID not found",
+			version: "v0.0.5-36-g8c7d97d",
+			args:    []string{"tk1a", "CentOS"},
+			want:    "",
+			err:     true,
 		},
 	}
 
