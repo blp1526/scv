@@ -35,10 +35,10 @@ func TestLoggerDebug(t *testing.T) {
 		logger := &Logger{Verbose: test.verbose, OutStream: outStream, ErrStream: errStream}
 		got, err := logger.Debug(test.a)
 		if test.err && err == nil {
-			t.Errorf("test.err: %s, err: %s", test.err, err)
+			t.Errorf("test.err: %v, err: %v", test.err, err)
 		}
 		if !test.err && err != nil {
-			t.Errorf("test.err: %s, err: %s", test.err, err)
+			t.Errorf("test.err: %v, err: %v", test.err, err)
 		}
 		if got != test.want {
 			t.Errorf("got: %d, test.want: %d", got, test.want)
@@ -70,10 +70,10 @@ func TestLoggerInfo(t *testing.T) {
 		logger := &Logger{OutStream: outStream, ErrStream: errStream}
 		got, err := logger.Info(test.a)
 		if test.err && err == nil {
-			t.Errorf("test.err: %s, err: %s", test.err, err)
+			t.Errorf("test.err: %v, err: %v", test.err, err)
 		}
 		if !test.err && err != nil {
-			t.Errorf("test.err: %s, err: %s", test.err, err)
+			t.Errorf("test.err: %v, err: %v", test.err, err)
 		}
 		if got != test.want {
 			t.Errorf("got: %d, test.want: %d", got, test.want)
@@ -105,10 +105,10 @@ func TestLoggerFatal(t *testing.T) {
 		logger := &Logger{OutStream: outStream, ErrStream: errStream}
 		got, err := logger.Fatal(test.a)
 		if test.err && err == nil {
-			t.Errorf("test.err: %s, err: %s", test.err, err)
+			t.Errorf("test.err: %v, err: %v", test.err, err)
 		}
 		if !test.err && err != nil {
-			t.Errorf("test.err: %s, err: %s", test.err, err)
+			t.Errorf("test.err: %v, err: %v", test.err, err)
 		}
 		if got != test.want {
 			t.Errorf("got: %d, test.want: %d", got, test.want)
@@ -144,10 +144,10 @@ func TestLoggerFormat(t *testing.T) {
 	for _, test := range tests {
 		got, err := logger.Format(test.colorName, test.level)
 		if test.err && err == nil {
-			t.Errorf("test.err: %s, err %s", test.err, err)
+			t.Errorf("test.err: %v, err %v", test.err, err)
 		}
 		if !test.err && err != nil {
-			t.Errorf("test.err: %s, err %s", test.err, err)
+			t.Errorf("test.err: %v, err %v", test.err, err)
 		}
 		if got != test.want {
 			t.Errorf("colorName: %s, want: %s, got: %s",

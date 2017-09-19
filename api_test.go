@@ -86,10 +86,10 @@ func TestAPIGET(t *testing.T) {
 	for _, test := range tests {
 		got, err := api.GET(test.url, test.accessToken, test.accessTokenSecret)
 		if test.err && err == nil {
-			t.Fatalf("test.err: %s, err: %s", test.err, err)
+			t.Fatalf("test.err: %v, err: %v", test.err, err)
 		}
 		if !test.err && err != nil {
-			t.Fatalf("test.err: %s, err: %s", test.err, err)
+			t.Fatalf("test.err: %v, err: %v", test.err, err)
 		}
 		if !reflect.DeepEqual(test.want, got) {
 			t.Fatalf("test.want: %s, got: %s", test.want, got)
