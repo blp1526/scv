@@ -37,9 +37,8 @@ func (config *Config) ServerID(zoneName string, serverName string) (id string, e
 	}
 	if id == "" {
 		return id, fmt.Errorf("ServerID is not found by zoneName: %s, serverName: %s", zoneName, serverName)
-	} else {
-		return id, err
 	}
+	return id, err
 }
 
 func (config *Config) CreateFile(dir string) (result string, err error) {

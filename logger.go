@@ -16,9 +16,8 @@ func (logger *Logger) Debug(a string) (n int, err error) {
 		format, _ := logger.Format("lightGray", "debug")
 		n, err = fmt.Fprintf(logger.OutStream, format, a)
 		return n, err
-	} else {
-		return n, err
 	}
+	return n, err
 }
 
 func (logger *Logger) Info(a string) (n int, err error) {
@@ -26,7 +25,6 @@ func (logger *Logger) Info(a string) (n int, err error) {
 	return n, err
 }
 
-// NOTE: (a interface{}) is expected to be string or error.
 func (logger *Logger) Fatal(a interface{}) (n int, err error) {
 	format, _ := logger.Format("red", "fatal")
 	n, err = fmt.Fprintf(logger.ErrStream, format, a)
