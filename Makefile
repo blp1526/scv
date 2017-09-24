@@ -1,3 +1,4 @@
+LOCAL_PACKAGES = $(shell cd $(CURDIR) && go list ./... | grep -v '/vendor/')
 VERSION = $(shell git describe --dirty --tags)
 LDFLAGS = -ldflags "-X github.com/blp1526/scv.Version="$(VERSION)
 
@@ -6,11 +7,11 @@ all: build
 
 .PHONY: vet
 vet:
-	go vet ./...
+	go vet $(LOCAL_PACKAGES)
 
 .PHONY: test
 test: vet
-	go test -v --cover ./...
+	go test -v --cover $(LOCAL_PACKAGES)
 
 .PHONY: tmp
 tmp: test
